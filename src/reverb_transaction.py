@@ -54,7 +54,7 @@ def get_transactions(urls: List[str]) -> List[dict]:
             while True:
                 all_transactions.extend(get_transactions_from_table(driver, url))
                 logger.info("transactions captured")
-                logger.debug("wait for your click")
+                logger.debug("wait for your click on the `Next Transactions` button.")
                 wait_for_prices(driver)
                 button = driver.find_element(By.XPATH, "//button[normalize-space()='Next transactions']")
                 disabled = button.get_attribute("disabled")

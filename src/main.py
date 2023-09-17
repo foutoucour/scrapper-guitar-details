@@ -1,10 +1,11 @@
 import json
 from pathlib import Path
+from typing_extensions import Annotated
 
 from loguru import logger
 import typer
-
-from .reverb_transaction import get_transactions
+from pydantic_yaml import parse_yaml_raw_as
+from .reverb_transaction import record_transactions, TransactionConfig
 from .listing import get_listing
 
 app = typer.Typer()
@@ -18,16 +19,6 @@ epiphone_urls = [
 gibson_urls = [
     "https://www.gibson.com/en-US/Collection/les-paul",
     "https://www.gibson.com/en-US/Collection/es",
-]
-
-reverb_guitar_urls = [
-    "https://reverb.com/ca/p/epiphone-bb-king-lucille",
-    "https://reverb.com/ca/p/gibson-kirk-hammett-greeny-les-paul-standard",
-    "https://reverb.com/ca/p/epiphone-joe-bonamassa-signature-lazarus-59-les-paul-standard",
-    "https://reverb.com/ca/p/epiphone-59-les-paul-standard-outfit",
-    "https://reverb.com/ca/p/gibson-custom-shop-murphy-lab-59-les-paul-standard-reissue-ultra-light-aged",
-    "https://reverb.com/ca/p/epiphone-joe-bonamassa-black-beauty-les-paul-custom-outfit",
-    "https://reverb.com/ca/p/epiphone-joe-bonamassa-signature-les-paul-standard",
 ]
 
 
@@ -44,12 +35,10 @@ def listing():
 
 
 @app.command()
-def transactions():
+def transactions(config_file: Annotated[typer.FileText, typer.Option()]):
     logger.info("Starting")
-    listing_ = get_transactions(reverb_guitar_urls)
-    json_listing = json.dumps(listing_, indent=4)
-    listing_file = Path("prices.json")
-    listing_file.write_text(json_listing)
+    config = parse_yaml_raw_as(TransactionConfig, config_file)
+    record_transactions(config.urls)
     logger.info("Done")
 
 

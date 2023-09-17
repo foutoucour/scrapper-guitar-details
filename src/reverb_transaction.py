@@ -1,15 +1,21 @@
+import json
 from contextlib import contextmanager
 from datetime import datetime
+from pathlib import Path
 from typing import List
 
 from bs4 import BeautifulSoup, Tag
 from loguru import logger
-from pydantic import BaseModel
+from pydantic import BaseModel, HttpUrl, FilePath
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options as FirefoxOptions
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.wait import WebDriverWait
+
+
+class TransactionConfig(BaseModel):
+    urls: List[str]
 
 
 @contextmanager
@@ -45,14 +51,13 @@ def wait_for_prices(driver: webdriver.Firefox):
         EC.presence_of_element_located((By.CLASS_NAME, "csp-transaction-table-container__header__loader")))
 
 
-def get_transactions(urls: List[str]) -> List[dict]:
-    all_transactions: List[Transaction] = []
+def record_transactions(urls: List[str]):
     for url in urls:
-        url = f"{url}#price-guide"
+        url_price_guide = f"{url}#price-guide"
         with content_reverb(url) as driver:
             wait_for_prices(driver)
             while True:
-                all_transactions.extend(get_transactions_from_table(driver, url))
+                transactions = get_transactions_from_table(driver, url_price_guide)
                 logger.info("transactions captured")
                 logger.debug("wait for your click on the `Next Transactions` button.")
                 wait_for_prices(driver)
@@ -61,8 +66,10 @@ def get_transactions(urls: List[str]) -> List[dict]:
                 logger.debug(f"disabled: {disabled}")
                 if disabled:
                     break
-
-    return [sale.model_dump() for sale in all_transactions]
+        json_listing = json.dumps([t.model_dump() for t in transactions], indent=4)
+        slug = url.split("/")[-1]
+        listing_file = Path(f"transactions-{slug}.json")
+        listing_file.write_text(json_listing)
 
 
 def get_transactions_from_table(driver: webdriver.Firefox, url: str) -> List[Transaction]:

@@ -85,7 +85,7 @@ def get_transactions_from_tr(tr: Tag, url: str) -> Transaction:
     tds = tr.find_all("td")
     iprice = tds[2].text.replace("$", "").replace(",", "").split(".")[0]
     sale_details = Transaction(
-        model=url,
+        model= url.split("/")[-1],
         date=datetime.strptime(tds[0].text, date_format).date().__str__(),
         condition=tds[1].text,
         price=int(iprice)

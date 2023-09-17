@@ -26,11 +26,6 @@ First, run `poetry install`
 2. run `poetry run scrapper listing`
 3. the results are saved in `content.json`
 
-## TODO:
-* move the urls in a config file
-* add option to mention a specific url
-* add option to mention the config file
-
 
 # TODO:
 * add CI and tests

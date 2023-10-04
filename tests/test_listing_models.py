@@ -5,12 +5,14 @@ from bs4 import BeautifulSoup
 
 from src.listing_models import Brand, GuitarDetails
 
+current_folder = Path(__file__).parent
+
 
 @pytest.mark.parametrize(
     "filepath,brand,expected_raw",
     [
-        (
-            "./pages/Epiphone B.B. King Lucille, Exclusive Cherry.html",
+        pytest.param(
+            "./pages/epiphone-bb-king-lucille-cherry.html",
             Brand.epiphone,
             {
                 "Body Style": "ES",
@@ -56,12 +58,13 @@ from src.listing_models import Brand, GuitarDetails
                 "url": "https://example.com",
                 "model": "B.B. King Lucille,\n                            Exclusive",
             },
+            id="BB King Lucille Cherry",
         ),
     ],
 )
 def test_GuitarDetails_get(filepath: str, brand: Brand, expected_raw: dict):
     expected = GuitarDetails(**expected_raw)
-    file_content = Path(filepath).read_text()
-    soup = BeautifulSoup(file_content, features="html.parser")
+    file_ = current_folder / Path(filepath)
+    soup = BeautifulSoup(file_.read_text(), features="html.parser")
     res = GuitarDetails.get(soup, brand, "https://example.com")
     assert res == expected

@@ -27,7 +27,7 @@ jobs:
         run: poetry install
       - name: Run the automated tests (for example)
         run: poetry run pytest --verbose --junit-xml=./log/junit.xml --cov-branch --cov=src --cov-report xml
-      - name: Publish Unit Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        with:
-          files: ./log/*.xml
+#      - name: Publish Unit Test Results
+#        uses: EnricoMi/publish-unit-test-result-action@v2
+#        with:
+#          files: ./log/*.xml

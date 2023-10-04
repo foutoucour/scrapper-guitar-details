@@ -10,7 +10,7 @@ from src.listing_models import Brand, GuitarDetails
     "filepath,brand,expected_raw",
     [
         (
-            "pages/Epiphone B.B. King Lucille, Exclusive Cherry.html",
+            "./pages/Epiphone B.B. King Lucille, Exclusive Cherry.html",
             Brand.epiphone,
             {
                 "Body Style": "ES",

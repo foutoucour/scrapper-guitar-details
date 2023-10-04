@@ -31,3 +31,7 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry.scripts]
 scrapper = "src.main:app"
+
+[virtualenvs]
+create = true
+in-project = true

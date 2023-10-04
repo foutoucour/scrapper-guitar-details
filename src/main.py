@@ -42,5 +42,5 @@ def transactions(config_file: Annotated[typer.FileText, typer.Option()]):
     logger.info("Done")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     transactions()

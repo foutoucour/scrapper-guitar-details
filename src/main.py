@@ -1,4 +1,3 @@
-import json
 from pathlib import Path
 from typing_extensions import Annotated
 
@@ -27,9 +26,9 @@ def listing():
     logger.info("Starting")
     urls = epiphone_urls + gibson_urls
     listing_ = get_listing(urls)
-    json_listing = json.dumps(listing_, indent=4)
+    # json_listing = json.dumps(listing_.model_dump(), indent=4)
     listing_file = Path("listing.json")
-    listing_file.write_text(json_listing)
+    listing_file.write_text(listing_.model_dump_json(indent=4))
 
     logger.info("Done")
 
@@ -42,5 +41,5 @@ def transactions(config_file: Annotated[typer.FileText, typer.Option()]):
     logger.info("Done")
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     transactions()

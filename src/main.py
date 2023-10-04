@@ -11,14 +11,14 @@ from .listing import get_listing
 app = typer.Typer()
 
 epiphone_urls = [
-    "https://www.epiphone.com/en-US/Collection/modern-les-paul",
+    # "https://www.epiphone.com/en-US/Collection/modern-les-paul",
     "https://www.epiphone.com/en-US/Collection/original-es",
-    "https://www.epiphone.com/en-US/Collection/les-paul",
+    # "https://www.epiphone.com/en-US/Collection/les-paul",
 ]
 
 gibson_urls = [
-    "https://www.gibson.com/en-US/Collection/les-paul",
-    "https://www.gibson.com/en-US/Collection/es",
+    # "https://www.gibson.com/en-US/Collection/les-paul",
+    # "https://www.gibson.com/en-US/Collection/es",
 ]
 
 
@@ -27,9 +27,9 @@ def listing():
     logger.info("Starting")
     urls = epiphone_urls + gibson_urls
     listing_ = get_listing(urls)
-    json_listing = json.dumps(listing_, indent=4)
+    # json_listing = json.dumps(listing_.model_dump(), indent=4)
     listing_file = Path("listing.json")
-    listing_file.write_text(json_listing)
+    listing_file.write_text(listing_.model_dump_json(indent=4))
 
     logger.info("Done")
 

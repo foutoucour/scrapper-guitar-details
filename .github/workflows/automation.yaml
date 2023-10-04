@@ -26,9 +26,8 @@ jobs:
       - name: Install the project dependencies
         run: poetry install
       - name: Run the automated tests (for example)
-        run: poetry run pytest --cov-report xml --cov-report term-missing --cov=src -v --disable-warnings --random-order ./tests
+        run: poetry run pytest --cov-report lcov --cov-report term-missing --cov=src -v --disable-warnings --random-order ./tests
       - name: Code Coverage Summary Report
-        uses: 5monkeys/cobertura-action@master
+        uses: romeovs/lcov-reporter-action@v0.2.16
         with:
-          path: ./coverage.xml
-          minimum_coverage: 0
+          lcov-file: ./coverage.info

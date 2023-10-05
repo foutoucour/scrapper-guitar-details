@@ -154,3 +154,5 @@ cython_debug/
 
 *.json
 *.lcov
+
+.ruff_cache

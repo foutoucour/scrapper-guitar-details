@@ -25,7 +25,7 @@ jobs:
           key: venv-${{ hashFiles('poetry.lock') }}
       - name: Install the project dependencies
         run: poetry install
-      - name: Run the automated tests (for example)
+      - name: Run the automated tests
         run: poetry run pytest --verbose --junit-xml=./log/junit.xml --cov-branch --cov=src --cov-report xml
 #      - name: Publish Unit Test Results
 #        uses: EnricoMi/publish-unit-test-result-action@v2

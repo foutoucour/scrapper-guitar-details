@@ -37,7 +37,7 @@ create = true
 in-project = true
 
 [tool.pytest.ini_options]
-addopts = "--cov-report xml --cov-report term-missing --cov=src -v --disable-warnings --random-order"
+#addopts = "--cov-report xml --cov-report term-missing --cov=src -v --disable-warnings --random-order"
 log_level = "INFO"
 testpaths = [
     "tests",

@@ -3,7 +3,6 @@ from __future__ import annotations
 from enum import Enum
 from typing import List, Optional
 
-from bs4 import BeautifulSoup
 from pydantic import BaseModel, Field
 
 
@@ -55,34 +54,6 @@ class GuitarDetails(BaseModel):
     finishes: Optional[str] = None
     brand: Optional[str] = None
     url: Optional[str] = None
-
-    @classmethod
-    def get(cls, soup: BeautifulSoup, brand: Brand, link: str) -> GuitarDetails:
-        master = soup.find("div", id="master-product-tab-content")
-        h6 = master.find_all("h6")
-        raw_details = {h.getText(): h.find_next("p").getText() for h in h6}
-        details = cls(**raw_details)
-        details.set_finishes(soup, brand)
-        details.set_model(soup)
-        details.brand = brand.value
-        details.url = link
-        return details
-
-    def set_model(self, soup: BeautifulSoup) -> None:
-        self.model = soup.find("h2").getText()
-
-    def set_finishes(self, soup: BeautifulSoup, brand: Brand) -> None:
-        if brand == Brand.gibson:
-            finishes = [
-                finish.get("aria-label")
-                for finish in soup.find_all("a", class_="singleFinish")
-            ]
-        else:
-            finishes = [
-                finish.get("aria-label")
-                for finish in soup.find_all("label", class_="rs-finish-button")
-            ]
-        self.finishes = ";".join(finishes)
 
 
 class Brand(Enum):

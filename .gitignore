@@ -152,7 +152,8 @@ dmypy.json
 # Cython debug symbols
 cython_debug/
 
-*.json
+./*.json
 *.lcov
-
 .ruff_cache
+
+!./tests/data/*
